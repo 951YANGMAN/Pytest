@@ -10,28 +10,35 @@ from selenium.webdriver.common.by import By
 
 
 class LoginTest(unittest.TestCase):
+
     def setUp(self):  # 初始化
         # 打开浏览器
-        driver = webdriver.Chrome()
+        self.driver = webdriver.Chrome()
         self.options = Options()
+
         # 绕开网页自动测试工具
         self.options.add_argument("--disable-blink-features=AutomationControlled")
         # 指定浏览器
-        service = Service(executable_path="D:/ToolKit/chromedriver-win64/chromedriver-win64/chromedriver.exe")
-        self.driver = webdriver.Chrome(service=service, options=self.options)
-        # 进入网页
-        driver.get("https://www.bilibili.com")
-        self.driver.maximize_window()
+        self.service = Service(executable_path="D:/ToolKit/chromedriver-win64/chromedriver-win64/chromedriver.exe")
+        self.driver = webdriver.Chrome(service=self.service, options=self.options)
         # 等待网路延迟
         self.driver.implicitly_wait(5)
+        # 进入网页
+        self.driver.get("https://www.bilibili.com")
+        self.driver.maximize_window()
+
 
     @pytest.mark.parametrize('username , password,result',[
                                  ('xiaoluo' , '1234' , '出发'),
                                  ('xiaoluo','1234','出发'),
                                  ('xiaoluo','1234','出发')
-                             ])
+                             ],ids=(
+                              'test_shopping_mall_001'
+                              'test_shopping_mall_002'
+                              'test_shopping_mall_003'
+    ))
 
-    def test_shopping(self, username, password, result):
+    def test_shopping(self, username, password, result ):
         self.driver.get("https://www.bilibili.com/")
         self.driver.find_element(By.XPATH,"3456").click()
         self.driver.find_element(By.XPATH,"3456").send_keys(username)
